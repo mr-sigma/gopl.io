@@ -16,6 +16,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+        "strconv"
 )
 
 //!-main
@@ -45,7 +46,7 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "web" {
 		//!+http
 		handler := func(w http.ResponseWriter, r *http.Request) {
-			lissajous(w)
+			lissajous(w, r)
 		}
 		http.HandleFunc("/", handler)
 		//!-http
@@ -53,12 +54,16 @@ func main() {
 		return
 	}
 	//!+main
-	lissajous(os.Stdout)
+	// lissajous(os.Stdout, nil)
 }
 
-func lissajous(out io.Writer) {
+func lissajous(out io.Writer, r *http.Request) {
+        cycles, err  := strconv.Atoi(r.Form.Get("cycles"))
+
+        if err != nil {
+          panic("no cycles")
+        }
 	const (
-		cycles  = 5     // number of complete x oscillator revolutions
 		res     = 0.001 // angular resolution
 		size    = 100   // image canvas covers [-size..+size]
 		nframes = 64    // number of animation frames
