@@ -28,14 +28,26 @@ func init() {
 // 		pc[byte(x>>(7*8))])
 // }
 
-func PopCount(x uint64) int {
-  sum := 0
+// func PopCount(x uint64) int {
+//   sum := 0
 
-  for i := 0; i < 8; i++ {
-    sum += int(pc[byte(x>>(i*8))])
+//   for i := 0; i < 8; i++ {
+//     sum += int(pc[byte(x>>(i*8))])
+//   }
+
+//   return sum
+// }
+
+func PopCount(x uint64) int {
+  count := 0
+
+  for i := 0; i < 64; i++ {
+    if x&(1<<i) != 0 {
+      count++
+    }
   }
 
-  return sum
+  return count
 }
 
 //!-
