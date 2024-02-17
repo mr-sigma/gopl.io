@@ -38,13 +38,24 @@ func init() {
 //   return sum
 // }
 
+// func PopCount(x uint64) int {
+//   count := 0
+
+//   for i := 0; i < 64; i++ {
+//     if x&(1<<i) != 0 {
+//       count++
+//     }
+//   }
+
+//   return count
+// }
+
 func PopCount(x uint64) int {
   count := 0
 
-  for i := 0; i < 64; i++ {
-    if x&(1<<i) != 0 {
-      count++
-    }
+  for x != 0 {
+    x = x & (x - 1)
+    count++
   }
 
   return count
