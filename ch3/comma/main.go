@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
         "bytes"
+        "strings"
 )
 
 func main() {
@@ -30,10 +31,26 @@ func main() {
 
 func comma(s string) string {
   var buff bytes.Buffer
-  n := len(s)
+  var str string
+
+  if strings.HasPrefix(s, "-") {
+    buff.WriteByte('-')
+    str = s[1:]
+  } else {
+    str = s
+  }
+
+  n := len(str)
   if n <= 3 {
     return s
   }
+
+  dot := strings.LastIndex(str, ".")
+
+  if dot == -1 {
+    dot = n
+  }
+
 
   for i := 0; i < n; i++ {
     // 012345
@@ -42,10 +59,10 @@ func comma(s string) string {
     // 15000
     // 100000
     // 123,456,789
-    if i > 0 && (n - i) % 3 == 0 {
+    if i > 0 && i < dot && (dot - i) % 3 == 0 {
       buff.WriteByte(',')
     }
-    buff.WriteByte(s[i])
+    buff.WriteByte(str[i])
   }
 
   return buff.String()
